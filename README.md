@@ -8,6 +8,13 @@ This is our implementation for the paper:
 In Proceedings of the 28th International Conference on World Wide Web (WWW), 2019. 
 Preprint[https://arxiv.org/abs/1902.07243]
 
+
+# Introduction
+ Graph Data in Social Recommendation. It contains two graphs including the user-item graph (left part) and the user-user social graph (right part). Note that the number on the edges of the user-item graph denotes the opinions (or rating score) of users on the items via the interactions.
+![ 123](intro.jpg "Logo Title Text 1")
+
+
+
 Author: Wenqi Fan (https://wenqifan03.github.io, email: wenqifan03@gmail.com) 
 
 Also, I would be more than happy to provide a detailed answer for any questions you may have regarding GraphRec.
