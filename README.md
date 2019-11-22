@@ -4,7 +4,7 @@
 
 This is our implementation for the paper:
 
-[Wenqi Fan](https://wenqifan03.github.io), Yao Ma , Qing Li, Yuan He, Eric Zhao, Jiliang Tang, and Dawei Yin. [Graph Neural Networks for Social Recommendation](https://arxiv.org/pdf/1902.07243.pdf). 
+[**<u>Wenqi Fan</u>**](https://wenqifan03.github.io), Yao Ma , Qing Li, Yuan He, Eric Zhao, Jiliang Tang, and Dawei Yin. [Graph Neural Networks for Social Recommendation](https://arxiv.org/pdf/1902.07243.pdf). 
 In Proceedings of the 28th International Conference on World Wide Web (WWW), 2019. 
 Preprint[https://arxiv.org/abs/1902.07243]
 
@@ -20,7 +20,7 @@ In recent years, Graph Neural Networks (GNNs), which can naturally integrate nod
 
 
 ## Our Model GraphRec
-The overall architecture of the proposed model. It contains three major components: user modeling, item modeling, and rating prediction.The first component is user modeling, which is to learn latent factors of users. As data in social recommender systems includes two different graphs, i.e., a social graph and a user-item graph, we are provided with a great opportunity to learn user representations from different perspectives. Therefore, two aggregations are introduced to respectively process these two different graphs. One is item aggregation, which can be utilized to understand users via interactions between users and items in the user-item graph (or item-space). The other is social aggregation, the relationship between users in the social graph, which can help model users from the social perspective (or social-space). Then, it is intuitive to obtain user latent factors by combining information from both item space and social space. The second component is item modeling, which is to learn latent factors of items. In order to
+The overall architecture of the proposed model. It contains three major components: user modeling, item modeling, and rating prediction.The first component is user modeling, which is to learn latent factors of users. As data in social recommender systems includes two different graphs, i.e., a social graph and a user-item graph, we are provided with a great opportunity to learn user representations from different perspectives. Therefore, two aggregations are introduced to respectively process these two different graphs. One is item aggregation, which can be utilized to understand users via interactions between users and items in the user-item graph (or item-space). The other is social aggregation, the relationship between users in the social graph, which can help model users from the social perspective (or social-space). Then, it is intuitive to obtain user latent factors by combining information from both item space and social space. The second component is item modeling, which is to learn latent factors of items. In order to consider both interactions and opinions in the user-item graph, we introduce user aggregation, which is to aggregate users’ opinions in item modeling. The third component is to learn model parameters via prediction by integrating user and item modeling components.
 
 ![ 123](GraphRec.png "GraphRec")
 
@@ -36,14 +36,16 @@ If you use this code, please cite our paper:
 @inproceedings{fan2019graph,
   title={Graph Neural Networks for Social Recommendation},
   author={Fan, Wenqi and Ma, Yao and Li, Qing and He, Yuan and Zhao, Eric and Tang, Jiliang and Yin, Dawei},
-  booktitle={WWW},
-  year={2019}
+  booktitle={The World Wide Web Conference},
+  pages={417--426},
+  year={2019},
+  organization={ACM}
 }
 ```
 
 ## Environment Settings
 ##### python: 3.6
-##### pytorch: >0.2
+##### pytorch: 0.2+
 
 ## Example to run the codes
 
