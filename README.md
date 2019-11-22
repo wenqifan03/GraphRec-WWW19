@@ -57,7 +57,8 @@ python run_GraphRec_example.py
 
 ## Deep Neural Networks for Social Recommendations
 
-*  **Deep Social Collaborative Filtering.** In Proceedings of the 13th ACM Conference on Recommender Systems (RecSys 2019), 2019. (Long Paper,  Acceptance rate: 19%.) [[Arxiv](https://arxiv.org/abs/1907.06853)]
+* **<u>Wenqi Fan</u>**, Yao Ma, Dawei Yin, Jianping Wang, Jiliang Tang, Qing Li.
+  **Deep Social Collaborative Filtering.** In Proceedings of the 13th ACM Conference on Recommender Systems (RecSys 2019), 2019. (Long Paper,  Acceptance rate: 19%.) [[Arxiv](https://arxiv.org/abs/1907.06853)]    
 
 * **<u>Wenqi Fan</u>**, Tyler Derr, Yao Ma, Jianping Wang, Jiliang Tang, Qing Li.
   **Deep Adversarial Social Recommendation.**  In Proceedings of the International Joint Conference on Artificial Intelligence (IJCAI), 2019. [[Arxiv](https://arxiv.org/abs/1905.13160)]   [[Slides](https://drive.google.com/file/d/1lCvxGlkBm6ux3KderXlE0YE9ELSHlfbh/view?usp=sharing)]
