@@ -33,4 +33,4 @@ python run_GraphRec_example.py
 The original version of this code base was from GraphSage. We owe many thanks to William L. Hamilton for making his code available. 
 Please see the paper for funding details and additional (non-code related) acknowledgements.
 
-Last Update Date: May, 2019
+Last Update Date: Oct, 2019
