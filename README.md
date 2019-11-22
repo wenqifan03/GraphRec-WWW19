@@ -42,8 +42,8 @@ If you use this code, please cite our paper:
 ```
 
 ## Environment Settings
-python: 3.6
-pytorch: >0.2
+##### python: 3.6
+##### pytorch: >0.2
 
 ## Example to run the codes
 
