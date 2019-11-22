@@ -4,9 +4,12 @@
 
 This is our implementation for the paper:
 
-Wenqi Fan, Yao Ma , Qing Li, Yuan He, Eric Zhao, Jiliang Tang, and Dawei Yin. [Graph Neural Networks for Social Recommendation](https://arxiv.org/pdf/1902.07243.pdf). In Proceedings of the 28th International Conference on World Wide Web (WWW), 2019. Preprint[https://arxiv.org/abs/1902.07243]
+[Wenqi Fan](https://wenqifan03.github.io), Yao Ma , Qing Li, Yuan He, Eric Zhao, Jiliang Tang, and Dawei Yin. [Graph Neural Networks for Social Recommendation](https://arxiv.org/pdf/1902.07243.pdf). 
+In Proceedings of the 28th International Conference on World Wide Web (WWW), 2019. 
+Preprint[https://arxiv.org/abs/1902.07243]
 
 Author: Wenqi Fan (https://wenqifan03.github.io, email: wenqifan03@gmail.com) 
+
 Also, I would be more than happy to provide a detailed answer for any questions you may have regarding GraphRec.
 
 If you use this code, please cite our paper:
@@ -18,18 +21,19 @@ If you use this code, please cite our paper:
   year={2019}
 }
 ```
-## Environment Settings: 
+
+## Environment Settings
 python: 3.6
 pytorch: >0.2
 
-## Example to run the codes.
+## Example to run the codes
 
 Run GraphRec:
 ```
 python run_GraphRec_example.py
 ```
 
-# Acknowledgements:
+# Acknowledgements
 The original version of this code base was from GraphSage. We owe many thanks to William L. Hamilton for making his code available. 
 Please see the paper for funding details and additional (non-code related) acknowledgements.
 
