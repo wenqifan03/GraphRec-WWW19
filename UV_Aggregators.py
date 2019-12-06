@@ -36,11 +36,11 @@ class UV_Aggregator(nn.Module):
             if self.uv == True:
                 # user component
                 e_uv = self.v2e.weight[history]
-                uv_rep = self.v2e.weight[nodes[i]]
+                uv_rep = self.u2e.weight[nodes[i]]
             else:
                 # item component
                 e_uv = self.u2e.weight[history]
-                uv_rep = self.u2e.weight[nodes[i]]
+                uv_rep = self.v2e.weight[nodes[i]]
 
             e_r = self.r2e.weight[tmp_label]
             x = torch.cat((e_uv, e_r), 1)
