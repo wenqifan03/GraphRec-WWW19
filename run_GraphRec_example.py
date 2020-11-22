@@ -13,6 +13,8 @@ from Social_Encoders import Social_Encoder
 from Social_Aggregators import Social_Aggregator
 import torch.nn.functional as F
 import torch.utils.data
+from dataPreprocess import dataPreprocess
+from model import GraphRec
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 from math import sqrt
@@ -36,53 +38,6 @@ If you use this code, please cite our paper:
 ```
 
 """
-
-
-class GraphRec(nn.Module):
-
-    def __init__(self, enc_u, enc_v_history, r2e):
-        super(GraphRec, self).__init__()
-        self.enc_u = enc_u
-        self.enc_v_history = enc_v_history
-        self.embed_dim = enc_u.embed_dim
-
-        self.w_ur1 = nn.Linear(self.embed_dim, self.embed_dim)
-        self.w_ur2 = nn.Linear(self.embed_dim, self.embed_dim)
-        self.w_vr1 = nn.Linear(self.embed_dim, self.embed_dim)
-        self.w_vr2 = nn.Linear(self.embed_dim, self.embed_dim)
-        self.w_uv1 = nn.Linear(self.embed_dim * 2, self.embed_dim)
-        self.w_uv2 = nn.Linear(self.embed_dim, 16)
-        self.w_uv3 = nn.Linear(16, 1)
-        self.r2e = r2e
-        self.bn1 = nn.BatchNorm1d(self.embed_dim, momentum=0.5)
-        self.bn2 = nn.BatchNorm1d(self.embed_dim, momentum=0.5)
-        self.bn3 = nn.BatchNorm1d(self.embed_dim, momentum=0.5)
-        self.bn4 = nn.BatchNorm1d(16, momentum=0.5)
-        self.criterion = nn.MSELoss()
-
-    def forward(self, nodes_u, nodes_v):
-        embeds_u = self.enc_u(nodes_u)
-        embeds_v = self.enc_v_history(nodes_v)
-
-        x_u = F.relu(self.bn1(self.w_ur1(embeds_u)))
-        x_u = F.dropout(x_u, training=self.training)
-        x_u = self.w_ur2(x_u)
-        x_v = F.relu(self.bn2(self.w_vr1(embeds_v)))
-        x_v = F.dropout(x_v, training=self.training)
-        x_v = self.w_vr2(x_v)
-
-        x_uv = torch.cat((x_u, x_v), 1)
-        x = F.relu(self.bn3(self.w_uv1(x_uv)))
-        x = F.dropout(x, training=self.training)
-        x = F.relu(self.bn4(self.w_uv2(x)))
-        x = F.dropout(x, training=self.training)
-        scores = self.w_uv3(x)
-        return scores.squeeze()
-
-    def loss(self, nodes_u, nodes_v, labels_list):
-        scores = self.forward(nodes_u, nodes_v)
-        return self.criterion(scores, labels_list)
-
 
 def train(model, device, train_loader, optimizer, epoch, best_rmse, best_mae):
     model.train()
@@ -120,12 +75,13 @@ def test(model, device, test_loader):
 
 def main():
     # Training settings
-    parser = argparse.ArgumentParser(description='Social Recommendation: GraphRec model')
+    parser = argparse.ArgumentParser(description='Social Recommendation: Rec model')
     parser.add_argument('--batch_size', type=int, default=128, metavar='N', help='input batch size for training')
     parser.add_argument('--embed_dim', type=int, default=64, metavar='N', help='embedding size')
     parser.add_argument('--lr', type=float, default=0.001, metavar='LR', help='learning rate')
     parser.add_argument('--test_batch_size', type=int, default=1000, metavar='N', help='input batch size for testing')
     parser.add_argument('--epochs', type=int, default=100, metavar='N', help='number of epochs to train')
+    parser.add_argument('--data', type=str, default='data/Toy', metavar='N', help='number of epochs to train')    
     args = parser.parse_args()
 
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -135,12 +91,48 @@ def main():
     device = torch.device("cuda" if use_cuda else "cpu")
 
     embed_dim = args.embed_dim
-    dir_data = './data/toy_dataset'
-
-    path_data = dir_data + ".pickle"
+    dir_data = args.data
+    path_data = ''
+    for file in os.listdir(dir_data):
+        if file.endswith(".pickle"):
+            path_data = dir_data + '/' + file
+            print("\nPickle File Exists, No need to generate one....\n")
+    if path_data == '':
+        print('\ndataset.pickle not found. Generating a pickle file.......\n')
+        dp = dataPreprocess(dir_data)
+        dp.preprocess()
+        path_data = dir_data + '/dataset.pickle'
+    
+    print('\n***** Data Loaded ****\n')
+            
     data_file = open(path_data, 'rb')
-    history_u_lists, history_ur_lists, history_v_lists, history_vr_lists, train_u, train_v, train_r, test_u, test_v, test_r, social_adj_lists, ratings_list = pickle.load(
-        data_file)
+    if not dir_data == 'data/Toy':
+        history_u_lists = pickle.load(data_file)
+        history_ur_lists = pickle.load(data_file)
+        history_v_lists = pickle.load(data_file)
+        history_vr_lists = pickle.load(data_file)
+        train_u = pickle.load(data_file)
+        train_v = pickle.load(data_file)
+        train_r = pickle.load(data_file)
+        test_u = pickle.load(data_file)
+        test_v = pickle.load(data_file)
+        test_r = pickle.load(data_file)
+        social_adj_lists = pickle.load(data_file)
+        ratings_list = pickle.load(data_file)
+        users = pickle.load(data_file)
+        friends = pickle.load(data_file)
+        trust = pickle.load(data_file)
+        usersL = list(set(users+friends))
+        num_users = max(max(usersL), max(train_u), max(test_u))
+        num_items = max(max(list(train_v)), max(list(test_v)))
+        num_ratings = ratings_list.__len__()
+        
+    else:
+        history_u_lists, history_ur_lists, history_v_lists, history_vr_lists, train_u, train_v, train_r, test_u, test_v, test_r, social_adj_lists, ratings_list = pickle.load(data_file)
+        num_users = history_u_lists.__len__()
+        num_items = history_v_lists.__len__()
+        num_ratings = ratings_list.__len__()
+
     """
     ## toy dataset 
     history_u_lists, history_ur_lists:  user's purchased history (item set in training set), and his/her rating score (dict)
@@ -161,9 +153,6 @@ def main():
                                              torch.FloatTensor(test_r))
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=args.test_batch_size, shuffle=True)
-    num_users = history_u_lists.__len__()
-    num_items = history_v_lists.__len__()
-    num_ratings = ratings_list.__len__()
 
     u2e = nn.Embedding(num_users, embed_dim).to(device)
     v2e = nn.Embedding(num_items, embed_dim).to(device)
